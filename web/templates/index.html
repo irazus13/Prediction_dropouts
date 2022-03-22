@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Prediccion de asistencia a la clinica odontologica</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="/static/vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/vendor/lightcase/lightcase.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    
+	<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+	<link href="https://fonts.googleapis.com/css?family=Sacramento" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link href="https://file.myfontastic.com/7vRKgqrN3iFEnLHuqYhYuL/icons.css" rel="stylesheet">
+
+    <!-- Modernizr JS for IE8 support of HTML5 elements and media queries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+</head>
+<body data-spy="scroll" data-target="#navbar-nav-header" class="static-layout">
+	<div class="boxed-page">
+		<nav id="gtco-header-navbar" class="fh5co-nav" role="navigation">
+    <div class="container col-lg-10">
+           
+        
+        <div class="collapse navbar-collapse" id="navbar-nav-header">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</nav>		
+<section id="gtco-counter" class="overlay bg-fixed" >
+    <div class="container" style="background-image: url(/static/img/dentista4.jpg)">
+        <div class="section-content" >
+            <div class="row">
+                <div class="col-md-3 col-sm-3 counter-item" ">
+                    <img src="../static/img/icono.png" alt="icono" >
+                </div>
+                <div class="col-md-9 col-sm-9 counter-item">
+                   
+                    <span class="number" data-from="0" data-to="60" data-refresh-interval="100">DAT</span>
+                    <h4>Dental attendance predictor </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+<div class="jumbotron d-flex align-items-center"  >
+  <div class="container text-center">
+    <section id="gtco-contact-form" class="bg-white">
+        <div class="container">
+            <div class="section-content">
+                <!-- Section Title -->
+                <div class="title-wrap">
+                    <h2 class="section-title">Datos del paciente</h2>
+                    
+                </div>
+                <!-- End of Section Title -->
+                <div class="row">
+                    <!-- Contact Form Holder -->
+                    <div class="col-md-8 offset-md-2 contact-form-holder mt-4">
+                
+                        <form action="{{url_for('predict')}}" method="post">
+                            <div class="form-group ">
+                            <label for="fecha"> <b>Fecha de la visita </b> </label><br>
+                            <input class="Date form-control form-control-lg" type="date" name="fecha" placeholder="fecha de la visita" required/>
+                           </div>
+                            <div class="form-group "> <label for="age"> <b>Edad</b> </label><br>
+                                  <input class="form-control form-control-lg" type="text" name="age" placeholder="Por ejemplo 30" required/>
+                                  </div>
+                            <div class="form-group ">
+                                <label for="nacionalidad"><b>Nacionalidad</b>  </label><br>
+                                  <input class="form-control form-control-lg" type="text" name="nacionalidad" placeholder="Por ejemplo Española" required/>
+                                  </div>
+                            <div class="form-group ">
+                                <label for="comp_select"><b>Genero</b>  </label><br>
+                                <select name="comp_select" class="form-control form-control-lg">
+                                  {% for o in data %}
+                                  <option value="{{ o.Genero }}">{{ o.Genero }}</option>
+                                  {% endfor %}
+                                </select>
+                                
+                            </div>
+                            <div class="form-group ">
+                                <label for="bmi"><b>Distancia de su domicilio a la clinica </b>  </label><br>
+                                <input class="form-control form-control-lg" type="text" name="bmi" placeholder="En km (aproximado)" required/>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for="comp_select1"><b>Hora de visita </b> </label><br>
+                                <select name="comp_select1" class="form-control form-control-lg"></div>
+                                  {% for o in data1 %}
+                                  <option value="{{ o.hora }}">{{ o.hora }}</option>
+                                  {% endfor %}
+                                </select></div>
+                            <div class="form-group ">
+                                <label for="comp_select2"><b>¿Ha fallado el paciente previamente?  </b></label><br>
+                                <select name="comp_select2" class="form-control form-control-lg">
+                                  {% for o in data2 %}
+                                  <option value="{{ o.fallado }}">{{ o.fallado }}</option>
+                                  {% endfor %}
+                                </select></div>
+                            <div class="form-group ">
+                                <label for="comp_select3"><b>¿Que tratamiento se va a realizar? </b> </label><br>
+                                <select name="comp_select3" class="form-control form-control-lg">
+                                  {% for o in data3 %}
+                                  <option value="{{ o.tto }}">{{ o.tto }}</option>
+                                  {% endfor %}
+                                </select></div><br>
+                            <button type="submit" class="btn btn-outline-primary btn-lg btn-block"> Predecir </button>
+                        <div id="form-message-warning"></div>
+                        
+                    </div>
+                    <!-- End of Contact Form Holder -->
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <h4><u> {{prediction_text}} </h4><br>
+        </div>	
+
+        </div>
+    </section>
+</div></div>
+	
+<section id="gtco-who-we-are" >
+    <div class="container ">
+        <div class="section-content bg-white">
+            <div class="title-wrap">
+                <h2 class="section-title">La manera mas facil de mejorar<br> el indice de <b>inasistencia</b> de tu clinica</h2>
+            </div>
+            
+            <div class="row text-center">
+                <div class="col-md-6 col-sm-6 ">
+                    <img class="rounded-circle" src="/static/icons/animat-checkmark.gif" alt="Generic placeholder image" width="140" height="140">
+                    <h5 class="mb-4">Facil y simple</h5>
+                    <p>Introduces los datos y te da una probabilidad</p>
+                </div>
+                <!-- /.col-md-4 col-sm-6  -->
+                <div class="col-md-6 col-sm-6 ">
+                    <img class="rounded-circle" src="/static/icons/animat-customize.gif" alt="Generic placeholder image" width="140" height="140">
+                    <h5 class="mb-4">Totalmente customizable</h5>
+                    <p>Probabilidad especifica para cada paciente segun sus caracteristicas</p>
+                </div>
+               
+                <!-- /.col-md-4 col-sm-6  -->
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+</section>		<!-- Counter Section -->
+<section id="gtco-counter" class="overlay bg-fixed" >
+    <div class="container">
+        <div class="section-content" style="background-image: url(/static/img/dentista4.jpg)">
+            <div class="row">
+                <!-- Counter Item -->
+                <div class="col-md-3 col-sm-6 counter-item">
+                    <i class="lnr lnr-users"></i>
+                    <span class="number" data-from="0" data-to="34" data-refresh-interval="100">14</span>
+                    <h4>Usuarios</h4>
+                </div>
+                <!-- End of Counter Item -->
+                <!-- Counter Item -->
+                <div class="col-md-3 col-sm-6 counter-item">
+                    <i class="lnr lnr-briefcase"></i>
+                    <span class="number" data-from="0" data-to="32" data-refresh-interval="100">32</span>
+                    <h4>Clinicas</h4>
+                </div>
+                <!-- End of Counter Item -->
+                <!-- Counter Item -->
+                <div class="col-md-3 col-sm-6 counter-item">
+                    <i class="lnr lnr-heart"></i>
+                    <span class="number" data-from="0" data-to="38" data-refresh-interval="100">38</span>
+                    <h4>Feedbacks positivos</h4>
+                </div>
+                <!-- End of Counter Item -->
+                <!-- Counter Item -->
+                <div class="col-md-3 col-sm-6 counter-item">
+                    <i class="lnr lnr-rocket"></i>
+                    <span class="number" data-from="0" data-to="29" data-refresh-interval="100">29</span>
+                    <h4>Uso de la web</h4>
+                </div>
+                <!-- End of Counter Item -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End of Counter Section -->		<!-- Features Section-->
+<section id="gtco-features" class="">
+    <div class="container">
+        <div class="section-content bg-white">
+            <!-- Section Title -->
+            <div class="title-wrap">
+                <h2 class="section-title">
+                    ¿Como lo calcula?
+                </h2>
+                <p class="section-sub-title">Es un algoritmo llamado ExtraTreeClassifier programado con python</p>
+            </div>
+            <!-- End of Section Title -->
+            <div class="row">
+                <!-- Features Holder-->
+                <div class="col-md-12 features-holder">
+                    <div class="row">
+                        <!-- Features Item -->
+                        <div class="col-md-4 col-sm-6 feature-item item mb-3 mb-3 text-center">
+                            <div class="my-4">
+                                <i class="lnr lnr-cog fs-40"></i>
+                            </div>
+                            <h4>Datos</h4>
+                            <p>Para realizar el algoritmo se han usado 250.000 visitas de pacientes reales</p>
+                        </div>
+                        <!-- End of Feature Item -->
+                          <!-- Features Item -->
+                        <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
+                           <div class="my-4">
+                               <i class="lnr lnr-magic-wand fs-40"></i>
+                         </div>
+                             <h4>EDA</h4>
+                            <p>Se ha realizado un preprocesado previo y un analisis de los datos</p>
+                             </div>
+                      <!-- End of Feature Item -->
+                        <!-- Features Item -->
+                        <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
+                            <div class="my-4">
+                                <i class="lnr lnr-frame-contract fs-40"></i>
+                            </div>
+                           
+                            <h4>Variables</h4>
+                            <p>El modelo utiliza 9 variables propias del paciente para obtener los resultados </p>
+                        </div>
+                        <!-- End of Feature Item -->
+                        
+                    </div>
+                </div>
+                <!-- End of Features Holder-->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End of Features Section-->		<section id="gtco-section-featurettes" class="featurettes " >
+
+    <div class="container ">
+        <div class="section-content bg-white  ">
+            <div class="row ">
+                <div class="col-md-12 text-center >
+                    <!-- Section Title -->
+                    <div class="title-wrap  ">
+                        <h2 class="section-title">
+                            <b>Con el objetivo </b> de mejorar la salud bucal de las personas<br>
+                        </h2>
+                        <p class="section-sub-title">
+                        Nuevas formas de comunicacion con el paciente, nuevas formas de recogida de datos, recordatorios individualizados y a medida de cada uno                       </p>
+                    </div>
+                    <!-- End of Section Title -->
+
+                    <div class="featurettes-wrap text-left mb-4">
+                     
+                        <div class="row featurettes-item">
+
+                            <div class="col-md-4 offset-md-2 col-sm-6">
+                                <div class="my-5">
+                                    <span class="lnr lnr-camera fs-40 color-primary"></span>
+                                </div>
+                                <h4 class="mb-4">Interaccion automatica con las redes sociales del paciente</h4>
+                                <p>Busqueda del paciente y recopilacion de datos relacionados con la salud</p>
+                            </div><!--/ .col-md-4.col-md-offset-2.col-sm-6 -->
+
+                            <div class="col-md-4 offset-md-right-2 col-sm-6">
+                                <img class="my-5" src="/static/img/app-profile-mockup.png" alt="">
+                            </div><!--/ .col-md-4.col-md-offset-right-2.col-sm-6 -->
+
+                        </div><!--/ .featurettes-item -->
+
+                    </div><!--/ .featurettes-wrap -->
+
+                    <div class="featurettes-wrap text-left">
+
+                        <div class="row featurettes-item">
+
+                            <div class="col-md-4 offset-md-2 col-sm-6">
+                                <img class="my-4" src="/static/img/app-chat-mockup.png" alt="">
+                            </div><!--/ .col-md-4.col-md-offset-2.col-sm-6 -->
+
+                            <div class="col-md-4 offset-md-right-2 col-sm-6 mb-5">
+                                <div class="my-4">
+                                    <span class="lnr lnr-bubble fs-40 color-primary"></span>
+                                </div>
+                                <h4 class="mb-4">Optimizacion y actualizacion de los medios de comunicacion.</h4>
+                                <p>Consultas rapidas, pedir y recordar visita a traves de web, whatsapp u otros medios</p>
+                            </div><!--/ .col-md-4.col-md-offset-right-2.col-sm-6 -->
+
+                        </div><!--/ .featurettes-item -->
+
+                    </div><!--/ .featurettes-wrap -->
+
+                    <div class="featurettes-wrap text-left">
+
+                        <div class="row featurettes-item">
+
+                            <div class="col-md-4 offset-md-2 col-sm-6 offset-sm-0">
+                                <h4 class="mb-4">Proximamente disponible para mobiles y porgramas de gestion dental</h4>
+                               
+                            </div><!--/ .col-md-4.col-md-offset-2.col-sm-6 -->
+
+                            <div class="col-md-4 offset-md-right-2 col-sm-6 text-center">
+                                <a href="#0"><img class="btn-img my-4" src="/static/img/appstore-btn.png" alt=""></a>
+                                <a href="#0"><img class="btn-img" src="/static//img/playstore-btn.png" alt=""></a>
+                            </div><!--/ .col-md-4.col-md-offset-right-2.col-sm-6 -->
+
+                        </div><!--/ .featurettes-item -->
+
+                    </div><!--/ .featurettes-wrap -->
+
+                </div><!--/ .col-md-12 -->
+
+            </div><!--/ .row -->
+        </div>
+    </div><!--/ .container -->
+
+<!-- End of Client Section -->		<footer class="mastfoot mb-3  py-4 border-top " >
+    <div class="inner container ">
+         <div class="row ">
+         	<div class="col-md-6 d-flex align-items-center justify-content-md-start justify-content-center">
+         		<p class="mb-0">S.Irazusta. All Right Reserved. 2022</p>
+         	</div>
+           
+            <div class="col-md-6">
+            	<nav class="nav nav-mastfoot justify-content-md-end justify-content-center">
+	                <a class="nav-link" href="#">
+	                	<i class="icon-facebook"></i>
+	                </a>
+	                <a class="nav-link" href="#">
+	                	<i class="icon-twitter"></i>
+	                </a>
+	                <a class="nav-link" href="#">
+	                	<i class="icon-instagram"></i>
+	                </a>
+	                <a class="nav-link" href="#">
+	                	<i class="icon-linkedin"></i>
+	                </a>
+	                <a class="nav-link" href="#">
+	                	<i class="icon-youtube"></i>
+	                </a>
+	                <a class="nav-link" href="#">
+	                	<i class="icon-pinterest"></i>
+	                </a>
+	            </nav>
+            </div>
+            
+        </div>
+    </div>
+</footer>	</div>
+	
+</div>
+	<!-- External JS -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+	<script src="vendor/bootstrap/popper.min.js"></script>
+	<script src="vendor/bootstrap/bootstrap.min.js"></script>
+	<script src="vendor/select2/select2.min.js "></script>
+	<script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+	<script src="vendor/isotope/isotope.min.js"></script>
+	<script src="vendor/lightcase/lightcase.js"></script>
+	<script src="vendor/waypoints/waypoint.min.js"></script>
+	<script src="vendor/countTo/jquery.countTo.js"></script>
+
+	<!-- Main JS -->
+	<script src="js/app.min.js "></script>
+	<script src="//localhost:35729/livereload.js"></script>
+</body>
+</html>
