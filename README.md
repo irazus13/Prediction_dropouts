@@ -39,9 +39,4 @@ For this transformation a scrapping of different webs was performed.
 	- Roc curve with Predict_proba of X_test
 
 ## Conclusion
-* With this model we can reduce de dropout of the patients with a high confidance.
-
-## Future Work
-- Look for more variables like weather, local hollidays...
-
-  
+PDF of the presentation: https://github.com/irazus13/Prediction_dropouts/tree/main/web
