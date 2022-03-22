@@ -1,20 +1,6 @@
 <img src="https://bit.ly/2VnXWr2" alt="Ironhack Logo" width="100"/>
 
-# Prediction in outpatient visits]
-
-
-## Content
-- [Project Description](#project-description)
-- [Hypotheses / Questions](#hypotheses-questions)
-- [Dataset](#dataset)
-- [Cleaning](#cleaning)
-- [Analysis](#analysis)
-- [Model Training and Evaluation](#model-training-and-evaluation)
-- [Conclusion](#conclusion)
-- [Future Work](#future-work)
-- [Workflow](#workflow)
-- [Organization](#organization)
-- [Links](#links)
+# Prediction in outpatient visits
 
 ## Project Description
 The aim of this project is to provide a probability of non-attendance to improve communication with the patient and avoid missed visits.
